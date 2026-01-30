@@ -1,69 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Clawdwhale</title>
-  <style>
-    body {
-      margin: 0;
-      background: linear-gradient(180deg, #ff8a00, #ff5f00);
-      font-family: Arial, sans-serif;
-      color: white;
-      text-align: center;
-      padding-top: 80px;
-    }
-    .logo {
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      background: white;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 40px rgba(255,255,255,0.6);
-    }
-    .logo img {
-      width: 140px;
-    }
-    button {
-      background: black;
-      color: white;
-      border: none;
-      padding: 14px 32px;
-      font-size: 16px;
-      border-radius: 12px;
-      cursor: pointer;
-      margin-top: 30px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Clawdwhale</title>
+
+<style>
+:root{
+  --orange1:#ff8a00;
+  --orange2:#ff5f00;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(180deg,var(--orange1),var(--orange2));
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+
+.container{
+  max-width:520px;
+  width:100%;
+  text-align:center;
+}
+
+.logo-wrap{
+  width:140px;
+  height:140px;
+  margin:0 auto 20px;
+  border-radius:50%;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:
+    0 0 0 8px rgba(255,255,255,.15),
+    0 0 40px rgba(255,255,255,.6);
+}
+
+.logo-wrap img{
+  width:95px;
+  height:auto;
+}
+
+h1{
+  margin:0 0 12px;
+  font-size:clamp(28px,6vw,36px);
+  font-weight:700;
+}
+
+.desc{
+  font-size:clamp(14px,4vw,16px);
+  line-height:1.6;
+  opacity:.95;
+  margin-bottom:28px;
+}
+
+button{
+  appearance:none;
+  border:none;
+  background:#000;
+  color:#fff;
+  padding:14px 28px;
+  border-radius:14px;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
+}
+
+button:active{transform:scale(.97)}
+
+.user{
+  margin-bottom:16px;
+  font-size:15px;
+  opacity:.95;
+}
+
+/* desktop enhancement */
+@media (min-width:768px){
+  .logo-wrap{
+    width:160px;
+    height:160px;
+  }
+  .logo-wrap img{
+    width:110px;
+  }
+}
+</style>
 </head>
+
 <body>
 
-<div class="logo">
-  <img src="/logo.png" />
+<div class="container">
+
+  <div class="logo-wrap">
+    <img src="/logo.png" alt="Clawdwhale"/>
+  </div>
+
+  <h1>Clawdwhale</h1>
+
+  <p class="desc">
+    Clawdwhale (CLAWD) is a hybrid ocean-themed Web3 token that symbolizes the strength
+    of a whale and the toughness of a crab's claws within one decentralized ecosystem.
+    Inspired by the concept of the “whale” in the world of crypto, Clawdwhale represents
+    power, resilience, and community-driven growth.
+  </p>
+
+  <div id="auth"></div>
+
 </div>
-
-<h1>Clawdwhale</h1>
-
-<p style="max-width:700px;margin:auto;">
-Clawdwhale (CLAWD) is a hybrid ocean-themed Web3 token that symbolizes the strength of a whale and the toughness of a crab's claws within one decentralized ecosystem. Inspired by the concept of the “whale” in the world of crypto, Clawdwhale represents power, resilience, and community-driven growth.
-</p>
-
-<div id="auth"></div>
 
 <script>
 fetch("/me")
-  .then(res => res.json())
-  .then(data => {
-    const auth = document.getElementById("auth");
-    if (data.loggedIn) {
-      auth.innerHTML = `
-        <p>Connected as <b>@${data.user.username}</b></p>
+  .then(r=>r.json())
+  .then(d=>{
+    const el=document.getElementById("auth");
+    if(d.loggedIn){
+      el.innerHTML=`
+        <div class="user">Connected as <b>@${d.user.username}</b></div>
         <button onclick="location.href='/logout'">Logout</button>
       `;
-    } else {
-      auth.innerHTML = `
+    }else{
+      el.innerHTML=`
         <button onclick="location.href='/auth/x'">Connect X</button>
       `;
     }
