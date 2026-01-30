@@ -64,10 +64,9 @@ app.get("/", (req, res) => {
 
   <div class="box">
     <img src="/public/logo.png" alt="ClawdCat Logo">
-    <h1>ClawdCat</h1>
+    <h1>Clawdwhale</h1>
     <p>
-      ClawdCat is a next-generation digital platform focused on speed,
-      simplicity, and community-driven innovation.
+      Clawdwhale (CLAWD) is a hybrid ocean-themed Web3 token that symbolizes the strength of a whale and the toughness of a crab's claws in one decentralized ecosystem. Inspired by the concept of the "whale" in the world
     </p>
     <button onclick="location.href='/login'">Connect Twitter</button>
   </div>
