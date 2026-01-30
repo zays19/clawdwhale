@@ -1,24 +1,20 @@
-const express = require("express");
-const path = require("path");
-const session = require("express-session");
-const passport = require("passport");
-const TwitterStrategy = require("passport-twitter").Strategy;
+import express from "express";
+import session from "express-session";
+import passport from "passport";
+import { Strategy as TwitterStrategy } from "passport-twitter";
 
 const app = express();
 
-/* ========= STATIC FILES ========= */
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static("public"));
 
-/* ========= SESSION ========= */
 app.use(
   session({
-    secret: "clawdwhale_secret",
+    secret: "clawdwhale-secret",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
   })
 );
 
-/* ========= PASSPORT ========= */
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -33,12 +29,17 @@ passport.use(
       callbackURL: process.env.CALLBACK_URL,
     },
     (token, tokenSecret, profile, done) => {
-      return done(null, profile);
+      return done(null, {
+        id: profile.id,
+        username: profile.username,
+        name: profile.displayName,
+      });
     }
   )
 );
 
-/* ========= ROUTES ========= */
+// ===== ROUTES =====
+
 app.get("/auth/x", passport.authenticate("twitter"));
 
 app.get(
@@ -50,12 +51,17 @@ app.get(
 );
 
 app.get("/me", (req, res) => {
-  if (!req.user) return res.status(401).json({ error: "Not logged in" });
-  res.json(req.user);
+  if (!req.user) return res.json({ loggedIn: false });
+  res.json({ loggedIn: true, user: req.user });
 });
 
-/* ========= START ========= */
+app.get("/logout", (req, res) => {
+  req.logout(() => {
+    res.redirect("/");
+  });
+});
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, () => {
   console.log("Server running on port", PORT);
 });
