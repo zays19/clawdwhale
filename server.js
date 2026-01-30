@@ -58,9 +58,6 @@ app.get("/", (req, res) => {
       font-size: 16px;
       cursor: pointer;
     }
-    button:hover {
-      opacity: 0.9;
-    }
   </style>
 </head>
 <body>
@@ -88,9 +85,10 @@ app.get("/login", (req, res) => {
 });
 
 /* =========================
-   SERVER LISTEN (RAILWAY)
+   SERVER LISTEN (RAILWAY SAFE)
    ========================= */
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log("
+app.listen(PORT, "0.0.0.0", function () {
+  console.log("WEB JALAN PORT " + PORT);
+});
